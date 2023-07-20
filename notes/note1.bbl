@@ -1,0 +1,20 @@
+\begin{thebibliography}{2}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Angrist(1998)]{angrist1998estimating}
+Joshua~D Angrist.
+\newblock Estimating the labor market impact of voluntary military service
+  using social security data on military applicants.
+\newblock \emph{Econometrica}, 66\penalty0 (2):\penalty0 249--288, 1998.
+
+\bibitem[Goldsmith-Pinkham et~al.(2022)Goldsmith-Pinkham, Hull, and
+  Koles{\'a}r]{goldsmith2022contamination}
+Paul Goldsmith-Pinkham, Peter Hull, and Michal Koles{\'a}r.
+\newblock Contamination bias in linear regressions.
+\newblock Technical report, National Bureau of Economic Research, 2022.
+
+\end{thebibliography}

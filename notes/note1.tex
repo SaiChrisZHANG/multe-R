@@ -1,0 +1,126 @@
+\documentclass[twoside]{article}
+\input{settings.tex}
+
+\begin{document}
+\lecture{Contamination Bias in Linear Regressions}{as in \citet{goldsmith2022contamination}}{Sai Zhang}{The contamination bias arises in multiple-treatment regression even when the treatment assignment is as good as random, due to the \textbf{inherent nonlinear dependence} of mutually exclusive treatment indicators.}{This note is built on \citet{goldsmith2022contamination}.}
+
+\section{Motivation}
+Consider the regression
+\begin{equation}\label{eq:linear_binarytreat}
+    Y_i = \alpha + \beta D_i + \gamma W_i + U_i
+\end{equation}
+where
+\begin{itemize}
+    \item $D_i\in\left\{ 0,1 \right\}$ is a single treatment indicator
+    \item $W_i\in\left\{ 0,1 \right\}$ is a single binary control
+    \item $U_i$ is a mean-zero residual uncorrelated with $D_i$ and $W_i$
+\end{itemize}
+Assume the (within-strata) treatment assignment is random, i.e., conditionally independent of potential outcomes given the control:
+\begin{equation}\label{eq:conditional_indep}
+    \left( Y_i(0),Y_i(1) \right) \bot D_i \mid W_i
+\end{equation}
+where $Y_i(d)$ is the outcome of individual $i$ when $D_i=d$, $i$'s treatment effect is given by $\tau_i = Y_i(1)-Y_i(0)$, and the realized outcome is $Y_i=Y_i(0)+\tau_i D_i$.
+
+By \citet*{angrist1998estimating}, $\beta$ in Eq (\ref{eq:linear_binarytreat}) identifies a weighted average of within-strata ATEs with \myhl[myblue]{\textbf{convex}} weights:
+\begin{align}\label{eq:angrist_weightedATE}
+    \beta &= \phi \tau(0) + (1-\phi) \tau(1) &\text{where }\phi &= \frac{\mathrm{var}(D_i\mid W_i=0)\Pr (W_i=0)}{\sum_{w=0}^1 \mathrm{var}(D_i\mid W_i=w)\Pr (W_i=w)}\in[0,1]
+\end{align}
+and 
+$$
+\tau(w) = \mathbb{E}\left[ Y_i(1) - Y_i(0) \mid W_i=w\right]
+$$
+is the ATE in the strata indexed by control $W_i = w$.
+
+By appying the Frisch-Waugh-Lovell (FWL) Theorem, $\beta$ can be written as the univariate regression coefficient of regression $Y_i$ on $\tilde{D}_i$\footnote{$\tilde{D}_i$ is the residual of regressing $D_i$ on $W_i$ and a constant: $$D_i = a + b W_i + \tilde{D}_i$$}:
+\begin{align}
+    \beta = \frac{\mathbb{E}\left[\tilde{D}_iY_i\right]}{\mathbb{E}\left[\tilde{D}^2_i\right]} &= \frac{\mathbb{E}\left[\tilde{D}_iY_i(0)\right]}{\mathbb{E}\left[\tilde{D}^2_i\right]} + \frac{\mathbb{E}\left[\tilde{D}_iD_i\tau_i\right]}{\mathbb{E}\left[\tilde{D}^2_i\right]} \nonumber \\ 
+    &=\frac{\mathbb{E}\left[\mathbb{E}\left[\tilde{D}_iY_i(0)\mid W_i\right]\right]}{\mathbb{E}\left[\tilde{D}^2_i\right]} + \frac{\mathbb{E}\left[\mathbb{E}\left[\tilde{D}_iD_i\tau_i\mid W_i\right]\right]}{\mathbb{E}\left[\tilde{D}^2_i\right]} \nonumber \\
+    &= \frac{\mathbb{E}\left[\mathbb{E}\left[\tilde{D}_i\mid W_i\right]\mathbb{E}\left[Y_i(0)\mid W_i\right]\right]}{\mathbb{E}\left[\tilde{D}^2_i\right]} + \frac{\mathbb{E}\left[ \mathbb{E}\left[\tilde{D}_iD_i\mid W_i\right] \mathbb{E}\left[\tau_i\mid W_i\right] \right]}{\mathbb{E}\left[\tilde{D}^2_i\right]} \label{eq:keystep_meanindep}\\
+    & = 0 + \frac{\mathbb{E}\left[ \mathrm{var}(D_i\mid W_i)\tau(W_i) \right]}{\mathbb{E}\left[ \mathrm{var}(D_i\mid W_i) \right]} \nonumber
+\end{align}
+
+for the derivation in Eq. (\ref{eq:keystep_meanindep}) to work, the key underlying point is that $\mathbb{E}\left[\tilde{D}_i\mid W_i\right]=0$, i.e., $\tilde{D}_i$ is \textcolor{myblue}{\textbf{mean-independent}} of $W_i$ and the propensity score $\mathbb{E}\left[ D_i\mid W_i \right]$ is \textcolor{myblue}{\textbf{linear}} since $W_i$ is \textcolor{myred}{\textbf{binary}}. 
+
+\paragraph*{Where contamination bias arises} Now add an \textbf{additional treatment arm}: consider 2 \myhl[myblue]{\textbf{mutually exclusive}} interventions: $D_i \in \left\{1,2\right\}$, represented by a vector of 2 treatment indicators $\mathbf{X}_i = \left(X_{i1},X_{i2}\right)'$ where 
+\begin{align*}
+    X_{i1}&=\mathbf{1}\left\{D_i=1\right\} & X_{i2}&=\mathbf{1}\left\{D_i=2\right\}
+\end{align*}
+this yields the regression 
+\begin{equation}\label{eq:example_2treatment}
+    Y_i = \alpha + \beta_1 X_{i1} + \beta_2 X_{i2} + \gamma W_i + U_i
+\end{equation}
+now the observe outcome is given by $Y_i = Y_i(0) +\tau_{i1}X_{i1}+ \tau_{i2}X_{i2}$
+\begin{align*}
+    \tau_{i1} &= Y_i(1)- Y_i(0) & \tau_{i2} &= Y_i(2)-Y_i(0)
+\end{align*}
+hence, some heterogeneity in treatment effect emerges. Still, assume $\mathbf{X}_i$ is conditionally independent of $Y_i(d)$ given control $W_i$
+$$
+\left( Y_i(0),Y_i(1),Y_i(2) \right) \bot \mathbf{X}_i \mid W_i
+$$
+If we still use FWL theorem to derive $\beta_1$
+\begin{equation}\label{eq:FWL_2treat_coef}
+    \beta_1 = \frac{\mathbb{E}\left[ \tilde{X}_{i1}Y_i \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} = \frac{\mathbb{E}\left[ \tilde{X}_{i1}Y_i(0) \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} + \frac{\mathbb{E}\left[ \tilde{X}_{i1} X_{i1}\tau_{i1} \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} + \frac{\mathbb{E}\left[ \tilde{X}_{i1} X_{i2}\tau_{i2} \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]}
+\end{equation}
+where $\tilde{X}_{i1}$ is obtained by running $X_{i1} = a+bX_{i2}+cW_i +\tilde{X}_{i1}$. Now, the issues is that $X_{i1}$ and $X_{i2}$ are \textbf{mutually exclusive}:
+\begin{itemize}
+    \item If $X_{i2} = 1$: $X_{i1}=0$, \myhl[myred]{\textbf{not}} depends on $W_i$
+    \item If $X_{i2} = 0$: the mean of $X_{i1}$ depends on $W_i$
+\end{itemize}
+hence in general
+$$
+\tilde{X}_{i1} \neq X_{i1} - \mathbb{E}\left[ X_{i1}\mid W_i,X_{i2} \right]
+$$
+which means that we can only derive $\beta_1$ from Eq. (\ref{eq:FWL_2treat_coef}) as 
+\begin{align}
+    \beta_1 &= \frac{\mathbb{E}\left[ \tilde{X}_{i1}Y_i(0) \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} + \frac{\mathbb{E}\left[ \tilde{X}_{i1} X_{i1}\tau_{i1} \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} + \frac{\mathbb{E}\left[ \tilde{X}_{i1} X_{i2}\tau_{i2} \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} \nonumber \\
+    &= 0 + \mathbb{E}\left[\lambda_{11}(W_i)\tau_1 (W_i)\right] + \mathbb{E}\left[ \lambda_{12}(W_i)\tau_2(W_i) \right]
+\end{align}
+breakdown each term:
+\begin{itemize}
+    \item $\mathbb{E}\left[\tilde{X}_{i1}Y_i(0)\right]/\mathbb{E}\left[\tilde{X}_{i1}^2\right]$: FWL regression residuals are \textbf{uncorrelated} with $Y_i(0)$
+    \begin{align*}
+       X_{i1}&=a + bX_{i2} + cW_i +\tilde{X}_{i1} \\
+        \textcolor{myred}{\xRightarrow[\text{\tiny on both sides}]{\text{\tiny purge $W_i$}}} \tilde{\tilde{X}}_{i1} &= \mu_1\tilde{\tilde{X}}_{i2} + \tilde{X}_{i1} \Rightarrow \tilde{X}_{i1} = \tilde{\tilde{X}}_{i1} - \mu_1 \tilde{\tilde{X}}_{i2} \xRightarrow{\left( Y_i(0),Y_i(1),Y_i(2) \right) \bot \mathbf{X}_i \mid W_i} \mathbb{E}\left[\tilde{X}_{i1}Y_i(0)\right] = 0
+    \end{align*}
+    \item $\mathbb{E}\left[ \tilde{X}_{i1} X_{i1}\tau_{i1} \right]/\mathbb{E}\left[ \tilde{X}^2_{i1} \right]$: similarly to Eq. (\ref{eq:keystep_meanindep}), 
+    \begin{align*}
+        \frac{\mathbb{E}\left[ \tilde{X}_{i1} X_{i1}\tau_{i1} \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} &= \frac{\mathbb{E}\left[ \mathbb{E}\left[\tilde{X}_{i1} X_{i1}\tau_{i1}\mid W_i\right] \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} \textcolor{myred}{\xRightarrow{\left( Y_i(0),Y_i(1),Y_i(2) \right) \bot \mathbf{X}_i \mid W_i}} = \mathbb{E}\left[ \underbrace{\frac{\mathbb{E}\left[\tilde{X}_{i1}X_{i1}\mid W_i\right]}{\mathbb{E}\left[\tilde{X}_{i1}^2\right]}}_{\equiv \lambda_{11}(W_i)}\tau_1(W_i) \right]
+    \end{align*}
+    here, $\lambda_{11}(W_i)$ is still non-negative and average to one, hence similar to Eq. (\ref{eq:keystep_meanindep}), this term is still a convex average of the conditional ATEs $\tau_1(W_i)$.
+    \item $\mathbb{E}\left[ \tilde{X}_{i1} X_{i2}\tau_{i2} \right]/\mathbb{E}\left[ \tilde{X}^2_{i1} \right]$: on the contrary,
+    \begin{align*}
+        \frac{\mathbb{E}\left[ \tilde{X}_{i1} X_{i2}\tau_{i2} \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} &= \frac{\mathbb{E}\left[ \mathbb{E}\left[\tilde{X}_{i1} X_{i2}\tau_{i2}\mid W_i\right] \right]}{\mathbb{E}\left[ \tilde{X}^2_{i1} \right]} \textcolor{myred}{\xRightarrow{\left( Y_i(0),Y_i(1),Y_i(2) \right) \bot \mathbf{X}_i \mid W_i}} = \mathbb{E}\left[ \underbrace{\frac{\mathbb{E}\left[\tilde{X}_{i1}X_{i2}\mid W_i\right]}{\mathbb{E}\left[\tilde{X}_{i1}^2\right]}}_{\equiv \lambda_{12}(W_i)} \tau_2(W_i)\right]
+    \end{align*}
+    here $X_{i2} \neq X_{i1} - \mathbb{E}\left[ X_{i1} \mid W_i, X_{i2} \right] $, hence $\lambda_{12}(W_i)$ is generally \myhl[myred]{\textbf{non-zero}}. This term is essentially the \textbf{contamination bias}.
+\end{itemize}
+
+\paragraph*{How to simply understand contamination bias?}
+As shown above,
+\begin{equation*}
+    \mathbb{E}\left[ \frac{\mathbb{E}\left[\tilde{X}_{i1}X_{i2}\mid W_i\right]}{\mathbb{E}\left[\tilde{X}_{i1}^2\right]} \tau_2(W_i)\right] \equiv \mathbb{E}\left[ \lambda_{12}(W_i) \tau_2(W_i)\right] \neq 0
+\end{equation*}
+arises because $\tilde{X}_{i1}$ is \textbf{uncorrelated} with $X_{i2}$ by construction, but \textbf{NOT} conditionally independent of $X_{i2}$. To understand this, consider a two-step residualization:
+\begin{itemize}
+    \item \underline{\textbf{Step 1}}: first, demean $X_{i1}$ and $X_{i2}$, conditional on $W_i$
+    \begin{align*}
+        \hat{X}_{i1} &= X_{i1} - \mathbb{E}\left[X_{i1} \mid W_i\right] = X_{i1}- p_1(W_i) & \hat{X}_{i2}&= X_{i2}-\mathbb{E}\left[X_{i2}\mid W_i\right] = X_{i2} - p_2(W_i)
+    \end{align*}
+    where $p_j(W_i) = \mathbb{E}\left[X_{ij}\mid W_i\right]$ gives the propensity score for treatment $j$
+    \item \underline{\textbf{Step 2}}: run a bivarite regression 
+    $$
+    \hat{X}_{i1} = \alpha \hat{X}_{i2} + \tilde{X}_{i1}
+    $$
+\end{itemize}
+Therefore, when the propensity scores vary across different strata ($W_i=w_a$ v.s. $W_i=w_b$), that is $$ p_j(w_a) \neq p_j(w_b) $$
+the regression in Step 2 would also preserve this strata heterogeneity, leadign to the \textit{contamination weight} $\lambda_{12}(W_i)$ non-zero.
+
+\paragraph*{A numerical example} 
+
+\newpage
+\vspace*{20pt}
+\noindent\rule{0.995\textwidth}{0.5pt}
+\vspace*{-10pt}
+\bibliographystyle{plainnat}
+\bibliography{ref.bib}
+
+\end{document}
