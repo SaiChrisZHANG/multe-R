@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex note1"] 1690311344 "note1.aux" "note1.bbl" "note1" 1690311347
+["bibtex note1"] 1690311344 "note1.aux" "note1.bbl" "note1" 1690311375
   "/usr/local/texlive/2018/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1480098435 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "note1.aux" 1690311347 4837 af2f66b17b1d4c928e22b5bbc29a4293 ""
+  "note1.aux" 1690311375 4837 af2f66b17b1d4c928e22b5bbc29a4293 ""
   "ref.bib" 1689775143 929 47f6e7ccaf38e35d5be03faaacc97657 ""
   (generated)
-  "note1.bbl"
   "note1.blg"
-["pdflatex"] 1690311344 "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.tex" "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.pdf" "note1" 1690311347
-  "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.aux" 1690311347 4837 af2f66b17b1d4c928e22b5bbc29a4293 ""
-  "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.tex" 1690311337 48571 76a685878fb8864ef6e997fdfa793b8e ""
+  "note1.bbl"
+["pdflatex"] 1690311372 "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.tex" "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.pdf" "note1" 1690311375
+  "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.aux" 1690311375 4837 af2f66b17b1d4c928e22b5bbc29a4293 ""
+  "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.tex" 1690311372 48562 fb142d51a1b0b5b484cf1573a9f1894e ""
   "/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/newpx/ecsups.enc" 1480098668 6292 5f5eff34c010300454c6de629a3dbaf4 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/newpx/tgpdiff.enc" 1480098668 2578 b708622871ecc9a6e7e3801756bb26ff ""
@@ -320,15 +320,15 @@
   "/usr/local/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt" 1546876434 4220279 03775d5b636d111d69743b04dcd76273 ""
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
   "figures/example_misspecify.png" 1689868236 180043 0a66e9495deeff3dcecc0d11fb346b50 ""
-  "note1.aux" 1690311347 4837 af2f66b17b1d4c928e22b5bbc29a4293 ""
+  "note1.aux" 1690311375 4837 af2f66b17b1d4c928e22b5bbc29a4293 ""
   "note1.bbl" 1690311344 838 4fd5a5cf43ef394ad166d5607559c026 "bibtex note1"
-  "note1.out" 1690311347 1078 ba59ec9f255d25f3f2ba28660e8f4b9e ""
-  "note1.tex" 1690311337 48571 76a685878fb8864ef6e997fdfa793b8e ""
+  "note1.out" 1690311375 1078 ba59ec9f255d25f3f2ba28660e8f4b9e ""
+  "note1.tex" 1690311372 48562 fb142d51a1b0b5b484cf1573a9f1894e ""
   "settings.tex" 1690293457 7269 26c5abcddb4785bbed0b7ca96dd8c398 ""
   (generated)
-  "note1.aux"
+  "note1.out"
+  "note1.pdf"
   "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.log"
   "/Users/admin/Library/CloudStorage/Dropbox/MyCodes/multe-R/notes/note1.pdf"
-  "note1.out"
   "note1.log"
-  "note1.pdf"
+  "note1.aux"
