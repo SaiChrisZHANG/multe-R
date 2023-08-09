@@ -1,0 +1,32 @@
+#' Project STAR data as analyzed in Krueger (1999)
+#'
+#' Subset of Project STAR data, focusing on kindergarten effects where
+#' differential attribution and other complications with the experimental
+#' analysis are minimal. The Project STAR RCT randomized 11600 students in 79
+#' public Tennessee elementary schools to one of three types of classes:
+#' regular-sized, small, regular-sized with a teaching aide.
+#' @format A data frame with 5,868 rows and 4 variables:
+#'
+#' \describe{
+#' \item{score}{Students' test score achievement at the end of kindergarten:
+#' calculated as the average percentile of students' math, reading and word
+#' recognition score on the Stanford Achievement Test in the experimental
+#' sample, following Krueger (1999).}
+#' \item{treatment}{Treatment assignment indicator, including 3 values:
+#' \code{"regular"} for the control group of regular-sized kindergarten class,
+#' \code{"small"} for the treatment group of small kindergarten class,
+#' \code{"aide"} for the treatment group of regular-sized class with a
+#' teaching aide.}
+#' \item{school}{School ID.}
+#' \item{teacher}{Teacher ID}
+#' }
+#' @source Harvard Dataverse, Project STAR page,
+#' \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=hdl:1902.1/10766}
+#' @references{
+#'
+#' \cite{Krueger, A. B. (1999). Experimental estimates of education production
+#'       functions. The quarterly journal of economics, 114(2), 497-532.
+#'       \doi{https://doi.org/10.1162/003355399556052}}
+#'
+#' }
+"star"

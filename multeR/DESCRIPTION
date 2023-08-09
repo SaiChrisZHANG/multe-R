@@ -1,11 +1,44 @@
 Package: multeR
-Type: Package
-Title: What the Package Does (Title Case)
+Title: Multiple Treatment Effects Regression
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R:
+    c(person(given = "Paul",
+            family = "Goldsmith-Pinkham",
+            role = c("aut"),
+            email = "paul.goldsmith-pinkham@yale.edu"),
+      person(given = "Peter",
+            family = "Hull",
+            role = c("aut"),
+            email = "peter_hull@brown.edu"),
+      person(given = "Michal",
+            family = "Kolesár",
+            role = c("aut"),
+            email = "kolesarmi@googlemail.com"),
+      person(given= "Sai",
+             family = "Zhang",
+             role = c("trl","cre"),
+             email = "saizhang.econ@gmail.com"))
+Description: Calculate estimators adjusted for the contamination bias in 
+    multiple treatment setting with heterogeneous treatment effects.
+Depends: R (>= 4.1.0)
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Imports:
+    stats,
+    Formula,
+    data.table,
+    Matrix,
+    rlang
+Suggests:
+    ggplot2,
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    formatR
+RoxygenNote: 7.2.3
+URL: https://github.com/SaiChrisZHANG/multe-R
+VignetteBuilder: knitr
+Language: en-US
+BugReports: https://github.com/SaiChrisZHANG/multe-R/issues
+Config/testthat/edition: 3

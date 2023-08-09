@@ -1,0 +1,81 @@
+---
+output:
+  pdf_document:
+    latex_engine: pdflatex
+    citation_package: natbib
+    template: mk_Rpackage_template.tex
+    toc: true
+    toc_depth: 2
+    includes:
+        in_header: vignette_head.tex
+    keep_tex: true
+title: "Contamination Bias in Linear Regressions"
+author: "Sai Zhang"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+geometry: margin=1in
+fontfamily: mathpazo
+fontsize: 10pt
+bibliography: np-testing-library.bib
+vignette: >
+  %\VignetteIndexEntry{Contamination Bias in Linear Regressions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE, cache=FALSE}
+library("knitr")
+library("formatR")
+knitr::opts_knit$set(self.contained = FALSE)
+knitr::opts_chunk$set(tidy = TRUE, collapse=TRUE, comment = "#>",
+                      tidy.opts=list(blank=FALSE, width.cutoff=55))
+```
+
+# Introduction
+
+The package `multeR` implements contamination bias decomposition and bias-aware
+estimation for linear regressions considered in @goldsmith2022contamination. 
+In this vignette, we demonstrate the implementation using Project STAR data as
+in @krueger1999experimental, which are included in the package as a data frame 
+`star`.
+
+# Model
+
+```{r}
+library(multeR)
+```
+
+# Bias-aware treatment effect estimation
+```{r, }
+multe(score ~ treatment | school, data=star, base_val = "regular")
+multe(score ~ treatment | school, data=star, base_val = "regular", vce = "oracle")
+```
+
+# Contamination bias decomposition
+```{r, }
+multe(score ~ treatment | school, data=star, base_val = "regular", decomp = TRUE)
+multe(score ~ treatment | school, data=star, base_val = "regular", 
+      decomp = TRUE, minmax = TRUE)
+```
+
+# Save implicit regression weights and group-specific treatment effects
+One can save the implicit ATE regression weights and the saturated group-specific 
+treatment effects, then calculate the correlations to get a sense of how much 
+contamination bias might affect estimates from such a model.
+ 
+```{r, }
+d <- multe(score ~ treatment | school, data=star, base_val = "regular", 
+           decomp = TRUE, save_lambda_as = "lambda", save_tau_as = "tau", print=FALSE)
+lambda <- d$decomposition$lambda_saved
+tau <- d$decomposition$tauhat_saved
+cor(lambda,tau)
+```
+
+# Weak overlapping
+Weak overlapping strata will be dropped, as shown in this pseudo example.
+```{r, }
+df <- star
+df$moc_ctrl <- rep(1:5, length.out=length(df$score))
+multe(score ~ treatment | school + moc_ctrl, data=df, base_val = "regular", decomp = T)
+```
+
+# Reference
