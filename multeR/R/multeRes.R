@@ -40,7 +40,7 @@ multeRes.EsttabConst <- function(res,n,vce,alpha) {
                           ")")
     )
     colnames(outtab) <- colnm_or
-    rownames(outtab) <- res$Tlevels[-1]
+    rownames(outtab) <- sort(res$Tlevels[-1])
   }
   else {
     outtab <- cbind(sprintf("%.7f",res$est[,n]),
@@ -54,7 +54,7 @@ multeRes.EsttabConst <- function(res,n,vce,alpha) {
                            ")")
     )
     colnames(outtab) <- colnm_po
-    rownames(outtab) <- res$Tlevels[-1]
+    rownames(outtab) <- sort(res$Tlevels[-1])
   }
   outtab
 }
@@ -62,7 +62,7 @@ multeRes.EsttabConst <- function(res,n,vce,alpha) {
 ## construct the results table for contamination bias decomposition
 multeRes.EsttabDecomp <- function(res_decomp,minmax) {
   outest <- matrix(sprintf("%.7f",res_decomp$est),ncol=5)
-  rownames(outest) <- res_decomp$Tlevels[-1]
+  rownames(outest) <- sort(res_decomp$Tlevels[-1])
   outse <- matrix(paste0("(",sprintf("%.7f",res_decomp$se),")"),ncol=5)
   rownames(outse) <- rep(NULL,length(res_decomp$Tlevels[-1]))
   outtab <- rbind(outest,outse)[rep(seq_len(nrow(outest)),each=2)+c(0,nrow(outest)),]
